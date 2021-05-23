@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc --build",
     "test:init": "yarn build && yarn link && chmod +x ./dist/index.js",
-    "test:run": "article_md"
+    "test:run": "yarn build && article_md"
   },
   "devDependencies": {
     "@types/node": "^15.6.0",
