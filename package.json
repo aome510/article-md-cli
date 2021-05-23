@@ -1,0 +1,26 @@
+{
+  "name": "article_md",
+  "version": "0.1",
+  "author": "Thang Pham <phamducthang1234@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.9",
+    "turndown": "^7.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "article_md": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "test:init": "yarn build && yarn link && chmod +x ./dist/index.js",
+    "test:run": "article_md"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.0",
+    "@types/turndown": "^5.0.0"
+  }
+}
