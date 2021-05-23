@@ -4,8 +4,9 @@
   "author": "Thang Pham <phamducthang1234@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@mozilla/readability": "^0.4.1",
     "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.9",
+    "jsdom": "^16.5.3",
     "turndown": "^7.0.0",
     "yargs": "^17.0.1"
   },
@@ -21,6 +22,7 @@
     "test:run": "yarn build && article_md"
   },
   "devDependencies": {
+    "@types/jsdom": "^16.2.10",
     "@types/node": "^15.6.0",
     "@types/turndown": "^5.0.0",
     "@types/yargs": "^17.0.0"

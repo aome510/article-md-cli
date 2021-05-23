@@ -1,6 +1,7 @@
 import axios from "axios";
-import cheerio from "cheerio";
 import TurndownService from "turndown";
+import { JSDOM } from "jsdom";
+import { Readability } from "@mozilla/readability";
 
 type Article = {
     url: String,
@@ -13,11 +14,12 @@ type Article = {
 
 export default async function parse(url: string, turndownService: TurndownService): Promise<Article> {
     const response = await axios.get(url);
-    const $ = cheerio.load(response.data);
-    const body = turndownService.escape($('body').html());
-    const content = turndownService.turndown(body);
-    const title = $('title').text();
+    const doc = new JSDOM(response.data);
+    const reader = new Readability(doc.window.document);
+    const article = reader.parse();
+
+    const content = turndownService.turndown(article.content);
     return {
-        content, title, url, author: "", date_published: "", word_count: 0
+        content, url, title: article.title, author: "", date_published: "", word_count: 0
     };
 }
