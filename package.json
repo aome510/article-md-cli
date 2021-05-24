@@ -19,12 +19,22 @@
   "scripts": {
     "build": "tsc --build",
     "test:init": "yarn build && yarn link && chmod +x ./dist/index.js",
-    "test:run": "yarn build && article_md"
+    "test:run": "yarn build && article_md",
+    "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier \"**/*.{js,ts,md,json,yml}\" --write --ignore-path .gitignore"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.10",
     "@types/node": "^15.6.0",
     "@types/turndown": "^5.0.0",
-    "@types/yargs": "^17.0.0"
+    "@types/yargs": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.23.3",
+    "prettier": "^2.3.0",
+    "typescript": "^4.2.4"
   }
 }
