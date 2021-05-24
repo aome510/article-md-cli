@@ -21,6 +21,7 @@
     "test:init": "yarn build && yarn link && chmod +x ./dist/index.js",
     "test:run": "yarn build && article_md",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fixAll": "yarn lint --fix",
     "format": "prettier \"**/*.{js,ts,md,json,yml}\" --write --ignore-path .gitignore"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 
 type Article = {
-  url: String;
+  url: string;
   content: string;
   title: string;
   author: string;

@@ -31,7 +31,7 @@ async function main(): Promise<void> {
       const code = turndownService.escape(content);
       if (isCodeBlock(node)) {
         const className = node.firstElementChild.getAttribute("class") || "";
-        const language = (className.match(/language-(\S+)/) || [null, ""])[1];
+        const language = (/language-(\S+)/.exec(className) || [null, ""])[1];
 
         const fenceChar = options.fence.charAt(0);
         const fenceInCodeRegex = new RegExp("^" + fenceChar + "{3,}", "gm");
