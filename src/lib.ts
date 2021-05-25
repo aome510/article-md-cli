@@ -2,6 +2,7 @@ import axios from "axios";
 import TurndownService from "turndown";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
+import { isNull } from "util";
 
 type Article = {
   url: string;
@@ -20,6 +21,10 @@ export default async function parse(
   const doc = new JSDOM(response.data);
   const reader = new Readability(doc.window.document);
   const article = reader.parse();
+
+  if (isNull(article)) {
+    throw new Error(`failed to parse article from the url: ${url}`);
+  }
 
   const content = turndownService.turndown(article.content);
   return {

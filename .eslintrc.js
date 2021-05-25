@@ -3,16 +3,16 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json"],
+    project: ['./tsconfig.json'],
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "import", "eslint-comments"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:eslint-comments/recommended",
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     "prettier",
   ],
 };
