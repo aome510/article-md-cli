@@ -2,9 +2,8 @@ import axios from "axios";
 import TurndownService from "turndown";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
-import { isNull } from "util";
 
-type Article = {
+export type Article = {
   url: string;
   content: string;
   title: string;
@@ -13,7 +12,60 @@ type Article = {
   word_count: number;
 };
 
-export default async function parse(
+function isCodeBlock(node: TurndownService.Node): boolean {
+  return (
+    node.nodeName === "PRE" &&
+    node.firstChild !== null &&
+    node.firstChild.nodeName === "CODE"
+  );
+}
+
+export function initTurndownService(): TurndownService {
+  const turndownService = new TurndownService().addRule("escaped_code", {
+    filter: function (node) {
+      return (
+        isCodeBlock(node) ||
+        (node.nodeName === "CODE" &&
+          node.parentNode !== null &&
+          node.parentNode.nodeName !== "PRE")
+      );
+    },
+    replacement: function (content, node) {
+      // implementation below is based on https://github.com/domchristie/turndown/blob/master/src/commonmark-rules.js#L111
+      const code = turndownService.escape(content);
+      if (isCodeBlock(node) && node.firstElementChild !== null) {
+        const className = node.firstElementChild.getAttribute("class") || "";
+        const matches = /language-(\S+)/.exec(className);
+        const language = (matches && matches.length > 1 && matches[1]) || "";
+
+        const fenceInCodeRegex = new RegExp("^`{3,}", "gm");
+
+        let fenceSize = 3;
+        let match: RegExpExecArray | null;
+        while ((match = fenceInCodeRegex.exec(code))) {
+          if (match && match[0] && match[0].length >= fenceSize) {
+            fenceSize = match[0].length + 1;
+          }
+        }
+
+        const fence = Array(fenceSize + 1).join("`");
+
+        return `
+
+${fence}${language}
+    ${code.replace(/\n/g, "\n    ")}
+${fence}
+
+`;
+      }
+      return code;
+    },
+  });
+
+  return turndownService;
+}
+
+export async function parse(
   url: string,
   turndownService: TurndownService
 ): Promise<Article> {
@@ -22,7 +74,7 @@ export default async function parse(
   const reader = new Readability(doc.window.document);
   const article = reader.parse();
 
-  if (isNull(article)) {
+  if (article === null) {
     throw new Error(`failed to parse article from the url: ${url}`);
   }
 
