@@ -10,11 +10,17 @@
     "turndown": "^7.0.0",
     "yargs": "^17.0.1"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "bin": {
     "article_md": "./dist/index.js"
+  },
+  "lint-staged": {
+    "*.{js,ts,json}": ["yarn format && yarn lint:fixAll", "git add"]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "scripts": {
     "build": "tsc --build",
@@ -22,7 +28,7 @@
     "test:run": "yarn build && article_md",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fixAll": "yarn lint --fix",
-    "format": "prettier \"**/*.{js,ts,md,json,yml}\" --write --ignore-path .gitignore"
+    "format": "prettier \"**/*.{js,ts,json}\" --write --ignore-path .gitignore"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.10",
@@ -35,6 +41,8 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.23.3",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "typescript": "^4.2.4"
   }
