@@ -15,7 +15,8 @@
     "article_md": "./dist/index.js"
   },
   "lint-staged": {
-    "*.{js,ts,json}": ["yarn format && yarn lint:fixAll", "git add"]
+    "*.{json}": ["yarn prettier --write"],
+    "*.{js,ts}": ["yarn prettier --write", "yarn eslint --fix"]
   },
   "husky": {
     "hooks": {
@@ -28,7 +29,7 @@
     "test:run": "yarn build && article_md",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fixAll": "yarn lint --fix",
-    "format": "prettier \"**/*.{js,ts,json}\" --write --ignore-path .gitignore"
+    "format": " yarn prettier \"**/*.{js,ts,json}\" --write --ignore-path .gitignore"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.10",
