@@ -8,7 +8,7 @@ export type Article = {
   content: string;
   title: string;
   author: string;
-  date_published: string;
+  date_published: string | null;
   word_count: number;
 };
 
@@ -78,13 +78,16 @@ export async function parse(
     throw new Error(`failed to parse article from the url: ${url}`);
   }
 
+  // simple "word_count" hack
+  const word_count = (article.textContent.match(/[\w]+/g) ?? []).length;
+
   const content = turndownService.turndown(article.content);
   return {
     content,
     url,
+    word_count,
     title: article.title,
-    author: "",
-    date_published: "",
-    word_count: 0,
+    author: article.byline,
+    date_published: null,
   };
 }
