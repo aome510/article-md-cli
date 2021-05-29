@@ -32,9 +32,11 @@ export function initTurndownService(): TurndownService {
     },
     replacement: function (content, node) {
       // implementation below is based on https://github.com/domchristie/turndown/blob/master/src/commonmark-rules.js#L111
-      const code = turndownService.escape(content);
+      const code = turndownService.escape(node.textContent || content);
+
       if (isCodeBlock(node) && node.firstElementChild !== null) {
         const className = node.firstElementChild.getAttribute("class") || "";
+
         const matches = /language-(\S+)/.exec(className);
         const language = (matches && matches.length > 1 && matches[1]) || "";
 

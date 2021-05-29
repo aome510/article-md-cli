@@ -1,6 +1,6 @@
 {
   "name": "article_md",
-  "version": "0.1",
+  "version": "0.1.1",
   "author": "Thang Pham <phamducthang1234@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -25,8 +25,8 @@
   },
   "scripts": {
     "build": "tsc --build",
-    "test:init": "yarn build && yarn link && chmod +x ./dist/index.js",
-    "test:run": "yarn build && article_md",
+    "test:link": "yarn build && yarn link && chmod +x ./dist/index.js",
+    "test:run": "yarn build && ./dist/index.js",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fixAll": "yarn lint --fix",
     "format": " yarn prettier \"**/*.{js,ts,json}\" --write --ignore-path .gitignore"
