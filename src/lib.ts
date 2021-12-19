@@ -12,55 +12,24 @@ export type Article = {
   word_count: number;
 };
 
-function isCodeBlock(node: TurndownService.Node): boolean {
-  return (
-    node.nodeName === "PRE" &&
-    node.firstChild !== null &&
-    node.firstChild.nodeName === "CODE"
-  );
-}
-
 export function initTurndownService(): TurndownService {
-  const turndownService = new TurndownService().addRule("escaped_code", {
+  const turndownService = new TurndownService({
+    codeBlockStyle: "fenced",
+  }).addRule("code_block", {
     filter: function (node) {
-      return (
-        isCodeBlock(node) ||
-        (node.nodeName === "CODE" &&
-          node.parentNode !== null &&
-          node.parentNode.nodeName !== "PRE")
-      );
+      return node.nodeName == "PRE";
     },
     replacement: function (content, node) {
-      // implementation below is based on https://github.com/domchristie/turndown/blob/master/src/commonmark-rules.js#L111
       const code = turndownService.escape(node.textContent || content);
+      const fence = "```";
 
-      if (isCodeBlock(node) && node.firstElementChild !== null) {
-        const className = node.firstElementChild.getAttribute("class") || "";
+      return `
 
-        const matches = /language-(\S+)/.exec(className);
-        const language = (matches && matches.length > 1 && matches[1]) || "";
-
-        const fenceInCodeRegex = new RegExp("^`{3,}", "gm");
-
-        let fenceSize = 3;
-        let match: RegExpExecArray | null;
-        while ((match = fenceInCodeRegex.exec(code))) {
-          if (match && match[0] && match[0].length >= fenceSize) {
-            fenceSize = match[0].length + 1;
-          }
-        }
-
-        const fence = Array(fenceSize + 1).join("`");
-
-        return `
-
-${fence}${language}
+${fence}
     ${code.replace(/\n/g, "\n    ")}
 ${fence}
 
 `;
-      }
-      return code;
     },
   });
 
