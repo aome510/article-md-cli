@@ -8,18 +8,16 @@ export type Article = {
   content: string;
   title: string;
   author: string;
-  date_published: string | null;
-  word_count: number;
 };
 
 export function initTurndownService(): TurndownService {
   const turndownService = new TurndownService({
     codeBlockStyle: "fenced",
   }).addRule("code_block", {
-    filter: function (node) {
+    filter: function(node) {
       return node.nodeName == "PRE";
     },
-    replacement: function (content, node) {
+    replacement: function(content, node) {
       const code = turndownService.escape(node.textContent || content);
       const fence = "```";
 
@@ -49,16 +47,11 @@ export async function parse(
     throw new Error(`failed to parse article from the url: ${url}`);
   }
 
-  // simple "word_count" hack
-  const word_count = (article.textContent.match(/[\w]+/g) ?? []).length;
-
   const content = turndownService.turndown(article.content);
   return {
     content,
     url,
-    word_count,
     title: article.title,
     author: article.byline,
-    date_published: null,
   };
 }
