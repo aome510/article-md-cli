@@ -3,6 +3,8 @@
 import yargsParser from "yargs-parser";
 import { parse, initTurndownService, Article } from "./lib";
 
+const version = "0.2.1";
+
 async function main(): Promise<Article | null> {
   const {
     _: [url],
@@ -11,9 +13,9 @@ async function main(): Promise<Article | null> {
 
   if (url === undefined) {
     console.log(`
-    article_md - a CLI tool for parsing web content into readable text
+    article_md v${version} - a CLI tool for a web article into readable text
     Usage:
-      $ article_md $URL [--format=markdown|html(default)]
+      $ article_md $URL [--format=markdown(default)|html]
 `);
     return null;
   }

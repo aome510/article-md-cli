@@ -48,8 +48,10 @@ export async function parse(
     throw new Error(`failed to parse article from the url: ${url}`);
   }
 
-  let content = article.content;
-  if (format == "markdown") {
+  let content;
+  if (format == "html") {
+    content = article.content;
+  } else {
     content = turndownService.turndown(article.content);
   }
   return {
