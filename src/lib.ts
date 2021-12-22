@@ -4,8 +4,8 @@ import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 
 export type Article = {
-  url: string;
   content: string;
+  url: string;
   title: string;
   author: string;
 };
@@ -36,7 +36,8 @@ ${fence}
 
 export async function parse(
   url: string,
-  turndownService: TurndownService
+  turndownService: TurndownService,
+  format: string,
 ): Promise<Article> {
   const response = await axios.get(url);
   const doc = new JSDOM(response.data);
@@ -47,7 +48,10 @@ export async function parse(
     throw new Error(`failed to parse article from the url: ${url}`);
   }
 
-  const content = turndownService.turndown(article.content);
+  let content = article.content;
+  if (format == "markdown") {
+    content = turndownService.turndown(article.content);
+  }
   return {
     content,
     url,

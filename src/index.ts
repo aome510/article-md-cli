@@ -3,24 +3,32 @@
 import yargsParser from "yargs-parser";
 import { parse, initTurndownService, Article } from "./lib";
 
-async function main(): Promise<Article> {
+async function main(): Promise<Article | null> {
   const {
     _: [url],
+    format,
   } = yargsParser(process.argv.slice(2));
 
   if (url === undefined) {
-    throw new Error("please specify a valid URL to run the command");
+    console.log(`
+    article_md - a CLI tool for parsing web content into readable text
+    Usage:
+      $ article_md $URL [--format=markdown|html(default)]
+`);
+    return null;
   }
 
   const turndownService = initTurndownService();
-  const article = await parse(url, turndownService);
+  const article = await parse(url, turndownService, format);
 
   return article;
 }
 
 main()
   .then((article) => {
-    console.log(JSON.stringify(article, null, 2));
+    if (article) {
+      console.log(JSON.stringify(article, null, 2));
+    }
   })
   .catch((err) => {
     console.error(err);

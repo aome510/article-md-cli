@@ -10,20 +10,13 @@
     "turndown": "^7.0.0",
     "yargs": "^17.0.1"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "bin": {
     "article_md": "./dist/index.js"
   },
   "lint-staged": {
-    "*.{json}": [
-      "yarn prettier --write"
-    ],
-    "*.{js,ts}": [
-      "yarn prettier --write",
-      "yarn eslint --fix"
-    ]
+    "*.{json}": ["yarn prettier --write"],
+    "*.{js,ts}": ["yarn prettier --write", "yarn eslint --fix"]
   },
   "husky": {
     "hooks": {
@@ -32,7 +25,7 @@
   },
   "scripts": {
     "build": "tsc --build && chmod +x ./dist/index.js",
-    "run": "yarn build && ./dist/index.js",
+    "test:run": "yarn build && ./dist/index.js",
     "test:link": "yarn build && ln -sf $(pwd)/dist/index.js $HOME/.yarn/bin/test_article_md",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fixAll": "yarn lint --fix",
