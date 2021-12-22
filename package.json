@@ -1,6 +1,6 @@
 {
   "name": "article_md",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Thang Pham <phamducthang1234@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -10,13 +10,20 @@
     "turndown": "^7.0.0",
     "yargs": "^17.0.1"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "bin": {
     "article_md": "./dist/index.js"
   },
   "lint-staged": {
-    "*.{json}": ["yarn prettier --write"],
-    "*.{js,ts}": ["yarn prettier --write", "yarn eslint --fix"]
+    "*.{json}": [
+      "yarn prettier --write"
+    ],
+    "*.{js,ts}": [
+      "yarn prettier --write",
+      "yarn eslint --fix"
+    ]
   },
   "husky": {
     "hooks": {
