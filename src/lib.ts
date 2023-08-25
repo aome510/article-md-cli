@@ -2,10 +2,11 @@ import axios from "axios";
 import TurndownService from "turndown";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
+import fs from "fs";
 
 export type Article = {
   content: string;
-  url: string;
+  link: string;
   title: string;
   author: string;
 };
@@ -35,17 +36,24 @@ ${fence}
 }
 
 export async function parse(
-  url: string,
+  link: string,
   turndownService: TurndownService,
   format: string,
 ): Promise<Article> {
-  const response = await axios.get(url);
-  const doc = new JSDOM(response.data);
+  let rawData = "";
+  // check the link is a local file or not
+  if(fs.existsSync(link)) {
+    // I think I going to add a encoding option: --encoding=utf8
+    rawData = fs.readFileSync(link, 'utf8');
+  } else {
+    rawData = (await axios.get(link))?.data;
+  }
+  const doc = new JSDOM(rawData);
   const reader = new Readability(doc.window.document);
   const article = reader.parse();
 
   if (article === null) {
-    throw new Error(`failed to parse article from the url: ${url}`);
+    throw new Error(`failed to parse article from the link: ${link}`);
   }
 
   let content;
@@ -56,7 +64,7 @@ export async function parse(
   }
   return {
     content,
-    url,
+    link,
     title: article.title,
     author: article.byline,
   };
