@@ -43,7 +43,6 @@ export async function parse(
   let rawData = "";
   // check the link is a local file or not
   if(fs.existsSync(link)) {
-    // I think I going to add a encoding option: --encoding=utf8
     rawData = fs.readFileSync(link, 'utf8');
   } else {
     rawData = (await axios.get(link))?.data;
